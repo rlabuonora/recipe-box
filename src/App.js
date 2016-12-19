@@ -20,6 +20,10 @@ class AddButton extends Component {
         this.setState({ showModal: true });
     }
 
+    save() {
+        console.log("called save");
+    }
+
     render() {
         return(
                 <div>
@@ -28,18 +32,30 @@ class AddButton extends Component {
                 >
                   Add Recipe
             </Button>
+                <form className="form-horizontal">
                 <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Modal heading</Modal.Title>
+                  <Modal.Title>Add a Recipe</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  <h4> Text in modal </h4>
+                
+                  <div className="form-group">
+                    <label>Recipe</label>
+                    <input className="form-control" placeholder="Recipe Name"></input>
+                  </div>
+                  <div className="form-group">
+                    <label>Ingredients</label>
+                    <input className="form-control" placeholder="Ingredients (separated by commas)"></input>
+                </div>
+                
                 </Modal.Body>
-
-                  <Modal.Footer>
+                
+                <Modal.Footer>
+                  <Button className="primary" onClick={this.save.bind(this)}>Add Recipe</Button>
                   <Button onClick={this.close.bind(this)}>Close</Button>
                   </Modal.Footer>
-              </Modal>
+                </Modal>
+                </form>
                 
                 </div>
         );
