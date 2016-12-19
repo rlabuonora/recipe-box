@@ -105,6 +105,9 @@ class Recipe extends Component {
             open: false
         };
     }
+    delete() {
+        console.log(this.props.idx);
+    }
     render() {
         var lis = []
         this.props.ingredients.forEach(function(ingredient, i) {
@@ -124,7 +127,7 @@ class Recipe extends Component {
                 <RecipeForm title="Edit Recipe"
                             recipeTitle={this.props.title}
                             ingredients={this.props.ingredients}  />
-                <Button className="delete" bsStyle="danger">Delete </Button>
+                <Button onClick={this.delete.bind(this)} className="delete" bsStyle="danger">Delete </Button>
                 
               </Panel>
             </div>
@@ -162,8 +165,11 @@ class App extends Component {
     render() {
         var recipes = [];
         this.state.recipes.forEach(function(recipe, i) {
-            recipes.push(<Recipe key={i} title={recipe.title}
-                         ingredients={recipe.ingredients} />);
+            recipes.push(<Recipe
+                           key={i}
+                           title={recipe.title}
+                           idx={i}
+                           ingredients={recipe.ingredients} />);
         });
         return (
                 <div className="container">
