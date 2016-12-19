@@ -8,7 +8,15 @@ class RecipeForm extends Component {
     constructor() {
         super();
         this.state = {
-            showModal: false
+            showModal: false,
+            titleVal: "",
+            ingredientVals: ""
+        }
+    }
+    componentWillMount() {
+        if (this.props.recipeTitle) {
+            this.setState( { titleVal: this.props.recipeTitle,
+                             ingredientVals: this.props.ingredients });
         }
     }
     close() {
@@ -18,6 +26,21 @@ class RecipeForm extends Component {
     open() {
         this.setState({ showModal: true });
     }
+    handleTitleChange(event) {
+        this.setState( { titleVal: event.target.value });
+    }
+    handleIngredientChage(event) {
+        this.setState( { ingredientVals: event.targe.value });
+    }
+
+    add() {
+        console.log("called add");
+    }
+
+    edit() {
+        console.log("called edit");
+    }
+                   
     render() {
         return(
                 <div>
@@ -39,7 +62,8 @@ class RecipeForm extends Component {
                         <input
                           className="form-control"
                           placeholder="Recipe Name"
-                          value={  (this.props.recipeTitle) ? this.props.recipeTitle : "" }
+                          value={ this.state.titleVal  }
+                          onChange={ this.handleTitleChange }
                          ></input>
                       </div>
                 
@@ -48,13 +72,23 @@ class RecipeForm extends Component {
                         <input
                           className="form-control"
                           placeholder="Ingredients (separated by commas)"
-                          value={  (this.props.ingredients) ? this.props.ingredients : "" }
+                          value={  this.state.ingredientVals }
+                          onChange={ this.handleIngredientChage }
                         ></input>
                       </div>
 
                     </Modal.Body>
 
                     <Modal.Footer>
+                { this.props.title === "Add Recipe" ?
+                  <Button bsStyle="primary"
+                    onClick={this.add.bind(this)}
+                  > { this.props.title }
+                  </Button> :
+                  <Button bsStyle="warning"
+                    onClick={this.edit.bind(this)}
+                  > { this.props.title }
+                  </Button> }
                       <Button onClick={this.close.bind(this)}>Close</Button>
                     </Modal.Footer>
                   </Modal>
