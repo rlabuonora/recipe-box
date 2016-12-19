@@ -4,7 +4,7 @@ import './App.css';
 
 
 
-class AddButton extends Component {
+class RecipeForm extends Component {
     constructor() {
         super();
         this.state = {
@@ -19,44 +19,39 @@ class AddButton extends Component {
     open() {
         this.setState({ showModal: true });
     }
-
-    save() {
-        console.log("called save");
-    }
-
     render() {
         return(
                 <div>
-                <Button bsStyle="primary"
+                <Button bsStyle={ this.props.title === "Add Recipe" ? "primary" : "warning" }
                         onClick={this.open.bind(this)}
                 >
-                  Add Recipe
-            </Button>
-                <form className="form-horizontal">
-                <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Add a Recipe</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+                { this.props.title }
+                </Button>
                 
-                  <div className="form-group">
-                    <label>Recipe</label>
-                    <input className="form-control" placeholder="Recipe Name"></input>
-                  </div>
-                  <div className="form-group">
-                    <label>Ingredients</label>
-                    <input className="form-control" placeholder="Ingredients (separated by commas)"></input>
-                </div>
+                <form className="form-inline">
+                  <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>{ this.props.title }</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+
+                      <div className="form-group">
+                        <label>Recipe</label>
+                        <input className="form-control" placeholder="Recipe Name"></input>
+                      </div>
                 
-                </Modal.Body>
-                
-                <Modal.Footer>
-                  <Button className="primary" onClick={this.save.bind(this)}>Add Recipe</Button>
-                  <Button onClick={this.close.bind(this)}>Close</Button>
-                  </Modal.Footer>
-                </Modal>
+                      <div className="form-group">
+                        <label>Ingredients</label>
+                        <input className="form-control" placeholder="Ingredients (separated by commas)"></input>
+                      </div>
+
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                      <Button onClick={this.close.bind(this)}>Close</Button>
+                    </Modal.Footer>
+                  </Modal>
                 </form>
-                
                 </div>
         );
     }
@@ -72,21 +67,23 @@ class Recipe extends Component {
     render() {
         return(
             <div className="recipe">
-            <Button onClick={ ()=> this.setState({ open: !this.state.open })}>
-                Spaghetti
-            </Button>
-              <Panel collapsible expanded={this.state.open}>
+              <Button onClick={ ()=> this.setState({ open: !this.state.open })}>
+                  Spaghetti
+              </Button>
+                <Panel collapsible expanded={this.state.open}>
                 <h3> Ingredients </h3>            
-              <ul className="list-group">
-               <li className="list-group-item">Cras justo odio</li>
-                <li className="list-group-item">Dapibus ac facilisis in</li>
-                <li className="list-group-item">Morbi leo risus</li>
-                <li className="list-group-item">Porta ac consectetur ac</li>
+                <ul className="list-group">
+                  <li className="list-group-item">Cras justo odio</li>
+                  <li className="list-group-item">Dapibus ac facilisis in</li>
+                  <li className="list-group-item">Morbi leo risus</li>
+                  <li className="list-group-item">Porta ac consectetur ac</li>
                 </ul>
-                <Button bsStyle="warning">Edit </Button>
-                <Button bsStyle="danger">Delete </Button>
-            </Panel>
-                </div>
+                
+                <RecipeForm title="Edit Recipe" />
+                <Button className="delete" bsStyle="danger">Delete </Button>
+                
+              </Panel>
+            </div>
         );
     }
 }
@@ -99,7 +96,7 @@ class App extends Component {
                   <div className="well">
                     <Recipe />
                     <Recipe />
-                    <AddButton />
+                <RecipeForm title="Add Recipe" />
                   </div>
                 </div>
         );
