@@ -36,12 +36,20 @@ class RecipeForm extends Component {
 
                       <div className="form-group">
                         <label>Recipe</label>
-                        <input className="form-control" placeholder="Recipe Name"></input>
+                        <input
+                          className="form-control"
+                          placeholder="Recipe Name"
+                          value={  (this.props.recipeTitle) ? this.props.recipeTitle : "" }
+                         ></input>
                       </div>
                 
                       <div className="form-group">
                         <label>Ingredients</label>
-                        <input className="form-control" placeholder="Ingredients (separated by commas)"></input>
+                        <input
+                          className="form-control"
+                          placeholder="Ingredients (separated by commas)"
+                          value={  (this.props.ingredients) ? this.props.ingredients : "" }
+                        ></input>
                       </div>
 
                     </Modal.Body>
@@ -65,8 +73,8 @@ class Recipe extends Component {
     }
     render() {
         var lis = []
-        this.props.ingredients.forEach(function(ingredient) {
-            lis.push(<li className="list-group-item">{ingredient}</li>);
+        this.props.ingredients.forEach(function(ingredient, i) {
+            lis.push(<li key={i} className="list-group-item">{ingredient}</li>);
         });
         return(
             <div className="recipe">
@@ -79,7 +87,9 @@ class Recipe extends Component {
                 { lis }
                   
                 </ul>
-                <RecipeForm title="Edit Recipe" />
+                <RecipeForm title="Edit Recipe"
+                            recipeTitle={this.props.title}
+                            ingredients={this.props.ingredients}  />
                 <Button className="delete" bsStyle="danger">Delete </Button>
                 
               </Panel>
@@ -103,10 +113,22 @@ class App extends Component {
               ingredients: [ 'Tomato Sauce', 'Pasta', 'Meat Loaf' ] }
         ]});
     }
+
+    deleteRecipe(i) {
+
+    }
+
+    editRecipe(i) {
+
+    }
+
+    addRecipe(recipe) {
+
+    }
     render() {
         var recipes = [];
-        this.state.recipes.forEach(function(recipe) {
-            recipes.push(<Recipe title={recipe.title}
+        this.state.recipes.forEach(function(recipe, i) {
+            recipes.push(<Recipe key={i} title={recipe.title}
                          ingredients={recipe.ingredients} />);
         });
         return (
