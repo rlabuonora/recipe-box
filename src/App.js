@@ -11,7 +11,6 @@ class RecipeForm extends Component {
             showModal: false
         }
     }
-
     close() {
         this.setState({ showModal: false });
     }
@@ -65,20 +64,21 @@ class Recipe extends Component {
         };
     }
     render() {
+        var lis = []
+        this.props.ingredients.forEach(function(ingredient) {
+            lis.push(<li className="list-group-item">{ingredient}</li>);
+        });
         return(
             <div className="recipe">
-              <Button onClick={ ()=> this.setState({ open: !this.state.open })}>
-                  Spaghetti
+              <Button  onClick={ ()=> this.setState({ open: !this.state.open })}>
+                { this.props.title }
               </Button>
                 <Panel collapsible expanded={this.state.open}>
                 <h3> Ingredients </h3>            
                 <ul className="list-group">
-                  <li className="list-group-item">Cras justo odio</li>
-                  <li className="list-group-item">Dapibus ac facilisis in</li>
-                  <li className="list-group-item">Morbi leo risus</li>
-                  <li className="list-group-item">Porta ac consectetur ac</li>
+                { lis }
+                  
                 </ul>
-                
                 <RecipeForm title="Edit Recipe" />
                 <Button className="delete" bsStyle="danger">Delete </Button>
                 
@@ -89,13 +89,33 @@ class Recipe extends Component {
 }
 
 class App extends Component {
+    constructor() {
+        super();
+        this.state = {
+            recipes: []
+        }
+    }
+    componentWillMount() {
+        this.setState({ recipes: [
+            { title: 'Onion Pie',
+              ingredients: [ 'Onion', 'Pie Crust', 'Eggs' ] },
+            { title: 'Spaghetti',
+              ingredients: [ 'Tomato Sauce', 'Pasta', 'Meat Loaf' ] }
+        ]});
+    }
     render() {
+        var recipes = [];
+        this.state.recipes.forEach(function(recipe) {
+            recipes.push(<Recipe title={recipe.title}
+                         ingredients={recipe.ingredients} />);
+        });
         return (
                 <div className="container">
                 <h1>Recipe Box </h1>
-                  <div className="well">
-                    <Recipe />
-                    <Recipe />
+                <div className="well">
+                
+                { recipes }
+                    
                 <RecipeForm title="Add Recipe" />
                   </div>
                 </div>
