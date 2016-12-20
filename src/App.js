@@ -34,14 +34,13 @@ class RecipeForm extends Component {
     }
 
     add() {
-        console.log("Title" + this.state.titleVal);
-        console.log("Ingredients" + this.state.ingredientVals);
+        this.props.add(this.state.titleVal, this.state.ingredientVals);
+        this.close();
     }
 
     edit() {
-        console.log("called edit for recipe " + this.props.idx);
-        console.log("Title " + this.state.titleVal);
-        console.log("Ingredients " + this.state.ingredientVals);
+        this.props.edit(this.props.idx, this.state.titleVal, this.state.ingredientVals);
+        this.close();
     }
                    
     render() {
@@ -99,7 +98,7 @@ class RecipeForm extends Component {
                 </div>
         );
     }
-}
+} 
 
 class Recipe extends Component {
     constructor(...args) {
@@ -109,7 +108,11 @@ class Recipe extends Component {
         };
     }
     delete() {
-        console.log(this.props.idx);
+        alert("Sure?");
+        this.props.delete(this.props.idx);
+    }
+    edit(idx, title, ingredients) {
+        this.props.edit(idx, title, ingredients);
     }
     render() {
         var lis = []
@@ -131,6 +134,7 @@ class Recipe extends Component {
                             recipeTitle={this.props.title}
                             ingredients={this.props.ingredients}
                             idx={this.props.idx}
+                            edit={this.edit.bind(this)}
                 />
                 <Button onClick={this.delete.bind(this)} className="delete" bsStyle="danger">Delete </Button>
                 
@@ -157,25 +161,36 @@ class App extends Component {
     }
 
     deleteRecipe(i) {
-
+        let temp = this.state.recipes;
+        temp.splice(i, 1);
+        this.setState({ recipes: temp });
     }
 
-    editRecipe(i) {
-
+    editRecipe(i, title, ingredients) {
+        console.log(i + ", " + title + ", " + ingredients);
+        let temp = this.state.recipes;
+        temp[i].title = title;
+        temp[i].ingredients = ingredients.split(",").map(function(s) { return s.trim() });
+        this.setState({ recipes: temp });
     }
 
-    addRecipe(recipe) {
-
+    addRecipe(title, ingredients) {
+        let temp = this.state.recipes;
+        let ingredientsArr = ingredients.split(",").map(function(s) { return s.trim() });
+        temp.push({ title: title, ingredients: ingredientsArr });
+        this.setState({ recipes: temp });
     }
     render() {
         var recipes = [];
         this.state.recipes.forEach(function(recipe, i) {
             recipes.push(<Recipe
+                           delete={this.deleteRecipe.bind(this)}
+                           edit={this.editRecipe.bind(this)}
                            key={i}
                            title={recipe.title}
                            idx={i}
                            ingredients={recipe.ingredients} />);
-        });
+        }.bind(this));
         return (
                 <div className="container">
                 <h1>Recipe Box </h1>
@@ -183,7 +198,7 @@ class App extends Component {
                 
                 { recipes }
                     
-                <RecipeForm title="Add Recipe" />
+                <RecipeForm title="Add Recipe" add={this.addRecipe.bind(this)}/>
                   </div>
                 </div>
         );
