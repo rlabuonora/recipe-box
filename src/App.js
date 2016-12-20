@@ -155,12 +155,26 @@ class App extends Component {
         }
     }
     componentWillMount() {
-        this.setState({ recipes: [
-            { title: 'Onion Pie',
-              ingredients: [ 'Onion', 'Pie Crust', 'Eggs' ] },
-            { title: 'Spaghetti',
-              ingredients: [ 'Tomato Sauce', 'Pasta', 'Meat Loaf' ] }
-        ]});
+      const localStorageKey = "recipebox-recipes";
+      // check in local storage for data TODO: refactor
+      let recipesStr = window.localStorage.getItem(localStorageKey);
+      if ( recipesStr ) {
+        let recipesJson = JSON.parse(recipesStr);
+        this.setState( { recipes: recipesJson });
+      }  else {
+          this.setState( { recipes: [
+          { title: 'Onion Pie',
+            ingredients: [ 'Onion', 'Pie Crust', 'Eggs' ] },
+          { title: 'Spaghetti',
+            ingredients: [ 'Tomato Sauce', 'Pasta', 'Meat Loaf' ] }
+          ] });
+        }
+    }
+
+    componentWillUpdate() {
+        const localStorageKey = "recipebox-recipes";
+        let recipes = JSON.stringify(this.state.recipes);
+        window.localStorage.setItem(localStorageKey, recipes);        
     }
 
     deleteRecipe(i) {
@@ -206,5 +220,7 @@ class App extends Component {
         );
     }
 }
+
+
 
 export default App;
