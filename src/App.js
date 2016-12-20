@@ -35,6 +35,7 @@ class RecipeForm extends Component {
 
     add() {
         this.props.add(this.state.titleVal, this.state.ingredientVals);
+        this.setState({ titleVal: "", ingredientVals: "" });
         this.close();
     }
 
@@ -167,7 +168,6 @@ class App extends Component {
     }
 
     editRecipe(i, title, ingredients) {
-        console.log(i + ", " + title + ", " + ingredients);
         let temp = this.state.recipes;
         temp[i].title = title;
         temp[i].ingredients = ingredients.split(",").map(function(s) { return s.trim() });
