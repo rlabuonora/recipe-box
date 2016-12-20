@@ -30,15 +30,18 @@ class RecipeForm extends Component {
         this.setState( { titleVal: event.target.value });
     }
     handleIngredientChage(event) {
-        this.setState( { ingredientVals: event.targe.value });
+        this.setState( { ingredientVals: event.target.value });
     }
 
     add() {
-        console.log("called add");
+        console.log("Title" + this.state.titleVal);
+        console.log("Ingredients" + this.state.ingredientVals);
     }
 
     edit() {
-        console.log("called edit");
+        console.log("called edit for recipe " + this.props.idx);
+        console.log("Title " + this.state.titleVal);
+        console.log("Ingredients " + this.state.ingredientVals);
     }
                    
     render() {
@@ -63,7 +66,7 @@ class RecipeForm extends Component {
                           className="form-control"
                           placeholder="Recipe Name"
                           value={ this.state.titleVal  }
-                          onChange={ this.handleTitleChange }
+                          onChange={ this.handleTitleChange.bind(this) }
                          ></input>
                       </div>
                 
@@ -73,7 +76,7 @@ class RecipeForm extends Component {
                           className="form-control"
                           placeholder="Ingredients (separated by commas)"
                           value={  this.state.ingredientVals }
-                          onChange={ this.handleIngredientChage }
+                          onChange={ this.handleIngredientChage.bind(this) }
                         ></input>
                       </div>
 
@@ -126,7 +129,9 @@ class Recipe extends Component {
                 </ul>
                 <RecipeForm title="Edit Recipe"
                             recipeTitle={this.props.title}
-                            ingredients={this.props.ingredients}  />
+                            ingredients={this.props.ingredients}
+                            idx={this.props.idx}
+                />
                 <Button onClick={this.delete.bind(this)} className="delete" bsStyle="danger">Delete </Button>
                 
               </Panel>
