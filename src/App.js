@@ -110,7 +110,9 @@ class Recipe extends Component {
     }
     delete() {
         alert("Sure?");
+        this.setState( { open: false });
         this.props.delete(this.props.idx);
+        
     }
     edit(idx, title, ingredients) {
         this.props.edit(idx, title, ingredients);
