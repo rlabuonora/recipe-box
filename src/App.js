@@ -155,6 +155,7 @@ class App extends Component {
         }
     }
     componentWillMount() {
+        // TODO: refactor into helpers
       const localStorageKey = "recipebox-recipes";
       // check in local storage for data TODO: refactor
       let recipesStr = window.localStorage.getItem(localStorageKey);
